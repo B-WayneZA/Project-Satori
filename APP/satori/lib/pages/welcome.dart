@@ -6,55 +6,70 @@ class Welcome extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color.fromRGBO(217, 208, 222, 1),
       body: Center(
-      
         child: Padding(
-          
           padding: const EdgeInsets.all(16.0), // Add padding for better layout
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'Welcome to Project Satori',
+                'Your favourite fashion companion.',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),
               Text(
-                'Your ultimate fashion companion.',
-                style: TextStyle(fontSize: 16),
+                'Scan and discover 1000+ shopping items with seamless shopping, just for you!',
+                style: TextStyle(fontSize: 11),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 40),
+              SizedBox(height: 80),
               SizedBox(
-                width: double.infinity, // Make the button fill the width of its parent
+                width: double
+                    .infinity, // Make the button fill the width of its parent
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                  backgroundColor:  Color.fromRGBO(171, 73, 103, 1),
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                  textStyle: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold)),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/login');
-                  },
-                  child: Text('Login'),
-                ),
-              ),
-              SizedBox(height: 10),
-              SizedBox(  
-                width: double.infinity, // Make the button fill the width of its parent
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(171, 73, 103, 1),
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                  textStyle: TextStyle(
-                  fontSize: 20,
-                  color: Color.fromRGBO(14, 0, 4, 1),
-                  fontWeight: FontWeight.bold)),
+                      backgroundColor: Color.fromRGBO(171, 73, 102, 0.466),
+                       shape: RoundedRectangleBorder( //to set border radius to button
+                          borderRadius: BorderRadius.circular(10)),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                      textStyle:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                   onPressed: () {
                     Navigator.pushNamed(context, '/signup');
                   },
-                  child: Text('Sign Up'),
+                  child: Text(
+                    'Get started',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.black, // Title color
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              SizedBox(
+                width: double
+                    .infinity, // Make the button fill the width of its parent
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromRGBO(217, 208, 222, 1),
+                      shape: RoundedRectangleBorder( //to set border radius to button
+                          borderRadius: BorderRadius.circular(10)),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                      textStyle: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold)),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/login');
+                  },
+                  child: Text('Login',
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: const Color.fromRGBO(46, 160, 98, 1),
+                          fontWeight: FontWeight.bold)),
                 ),
               ),
             ],

@@ -7,13 +7,14 @@ import 'pages/signup.dart';
 void main() {
   runApp(MyApp());
 }
-
+ 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Project Satori',
-      theme: ThemeData(scaffoldBackgroundColor: Color.fromRGBO(217, 208, 222, 1)),
+      title: '"Project Satori"',
+      theme:
+          ThemeData(scaffoldBackgroundColor: Color.fromRGBO(217, 208, 222, 1)),
       initialRoute: '/',
       routes: {
         '/': (context) => Splash(),

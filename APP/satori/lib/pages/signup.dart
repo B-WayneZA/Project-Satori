@@ -1,30 +1,134 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class SignupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up'),
-      ),
+          backgroundColor: Color.fromRGBO(217, 208, 222, 1),
+          title: Text(
+            'Sign Up',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                fontFamily: "Roboto"),
+          )),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
-              decoration: InputDecoration(labelText: 'Email'),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+              child: TextField(
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                  labelStyle: TextStyle(fontSize: 11, fontFamily: "Roboto"),
+                  border: OutlineInputBorder(),
+                ),
+              ),
             ),
-            TextField(
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+              child: TextField(
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  labelStyle: TextStyle(fontSize: 11, fontFamily: "Roboto"),
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+              child: StatefulBuilder(
+                builder: (BuildContext context, StateSetter setState) {
+                  bool _obscureText = true;
+                  return StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setState) {
+                      return TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          labelStyle:
+                              TextStyle(fontSize: 11, fontFamily: "Roboto"),
+                          border: OutlineInputBorder(),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText = !_obscureText;
+                              });
+                            },
+                          ),
+                        ),
+                        obscureText: _obscureText,
+                      );
+                    },
+                  );
+                },
+              ),
             ),
             SizedBox(height: 20),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromRGBO(171, 73, 102, 0.466),
+                  shape: RoundedRectangleBorder(
+                      //to set border radius to button
+                      borderRadius: BorderRadius.circular(10)),
+                  padding: EdgeInsets.symmetric(horizontal: 100, vertical: 20),
+                  textStyle:
+                      TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
               onPressed: () {
                 // Implement sign up functionality
+                // TODO
               },
-              child: Text('Sign Up'),
+              child: Text(
+                'Sign Up',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black, // Title color
+                ),
+              ),
             ),
+            
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+              child: SignInButton(
+                Buttons.Google,
+                onPressed: () {
+                  // Add the onPressed code for Google Sign-In
+                },
+                text: "Sign up with Google",
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+              child: SignInButton(
+                Buttons.Apple,
+                onPressed: () {
+                  // Add the onPressed code for iCloud Sign-In
+                },
+                text: "Sign up with Apple",
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            )
           ],
         ),
       ),
