@@ -3,6 +3,7 @@ import 'pages/splash.dart';
 import 'pages/welcome.dart';
 import 'pages/login.dart';
 import 'pages/signup.dart';
+import 'pages/home.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
         '/welcome': (context) => Welcome(),
         '/login': (context) => LoginPage(),
         '/signup': (context) => SignupPage(),
+        '/home': (context) => HomePage(),
       },
     );
   }
