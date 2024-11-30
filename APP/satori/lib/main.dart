@@ -4,6 +4,8 @@ import 'pages/welcome.dart';
 import 'pages/login.dart';
 import 'pages/signup.dart';
 import 'pages/home.dart';
+import 'pages/account.dart';
+import 'pages/scan.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,6 +25,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginPage(),
         '/signup': (context) => SignupPage(),
         '/home': (context) => HomePage(),
+        '/account': (context) => AccountPage(),
+        '/scan': (context) => ScanPage(),
       },
     );
   }
