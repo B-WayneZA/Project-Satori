@@ -326,16 +326,22 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           iconTheme: IconThemeData(
-            color: Color.fromRGBO(217, 208, 222, 1), // Change your color here
+            color:_selectedIndex == 0
+              ? Color.fromRGBO(217, 208, 222, 1)
+              : Color.fromRGBO(12, 23, 19, 1),// Change your color here
           ),
-          backgroundColor: Color.fromRGBO(12, 23, 19, 1),
+          backgroundColor: _selectedIndex == 0
+              ? Color.fromRGBO(12, 23, 19, 1)
+              : Color.fromRGBO(217, 208, 222, 1),
           title: Text(
             _getTitleForPage(_selectedIndex),
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(217, 208, 222, 1),
+              color: _selectedIndex == 0
+              ? Color.fromRGBO(217, 208, 222, 1)
+              : Color.fromRGBO(12, 23, 19, 1),
               fontFamily: "Roboto",
             ),
           ),

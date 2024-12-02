@@ -13,11 +13,200 @@ class _AccountPageState extends State<AccountPage> {
   final List<Widget> _pages = [
     HomePage(),
     ScanPage(),
-        Column(children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 1.0), //TODO
-        ),
-      ]),
+    SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          /// Header Section
+           ListTile(
+            leading: CircleAvatar(
+              radius: 30,
+              backgroundImage:
+                  NetworkImage("https://via.placeholder.com/150"), // User image
+            ),
+            title: Text(
+              "Brandon",
+              style: TextStyle(
+                fontWeight: FontWeight.bold, 
+                fontFamily: "Montserrat",
+                fontSize: 20
+              ),
+            ),
+            subtitle: Text("@email"),
+            trailing: IconButton(
+                onPressed: () {
+                  // change avatar
+                },
+                icon: Icon(
+                  Icons.edit,
+                  color: Colors.grey,
+                ),
+              ),
+          ),
+
+          const Divider(),
+          /// Account Settings Section
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Account Settings",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                ListTile(
+                  leading: const Icon(Icons.person),
+                  title: const Text("Edit Profile"),
+                  subtitle: const Text("Name, Email"),
+                  onTap: () {
+                    // Navigate to Edit Profile Page
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.language),
+                  title: const Text("Change Language"),
+                  subtitle: const Text("Select your preferred language"),
+                  onTap: () {
+                    // Open Language Selection
+                  },
+                ),
+              ],
+            ),
+          ),
+
+          const Divider(),
+
+          /// Preferences Section
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Preferences",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                ListTile(
+                  leading: const Icon(Icons.location_on),
+                  title: const Text("Shopping Location"),
+                  subtitle: const Text("Update preferred shopping location"),
+                  onTap: () {
+                    // Open Shopping Location Page
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.camera_alt),
+                  title: const Text("Allow Camera Access"),
+                  subtitle: const Text("Manage camera permissions"),
+                  onTap: () {
+                    // Manage camera access
+                  },
+                ),
+              ],
+            ),
+          ),
+
+          const Divider(),
+
+          /// Security Section
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Security",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                ListTile(
+                  leading: const Icon(Icons.lock),
+                  title: const Text("Change Password"),
+                  subtitle: const Text("Update your account password"),
+                  onTap: () {
+                    // Navigate to Change Password
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.logout),
+                  title: const Text("Logout"),
+                  subtitle: const Text("Sign out of your account"),
+                  onTap: () {
+                    // Sign out of account
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.delete_forever),
+                  title: const Text("Delete Account", style: TextStyle(color: Colors.red)),
+                  subtitle: const Text("Permanently delete your account"),
+                  onTap: () {
+                    // Confirm Account Deletion
+                  },
+                ),
+              ],
+            ),
+          ),
+
+          const Divider(),
+
+          /// Support & Feedback Section
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Support & Feedback",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                ListTile(
+                  leading: const Icon(Icons.bug_report),
+                  title: const Text("Report Bugs and Issues"),
+                  onTap: () {
+                    // Open Bug Reporting Page
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.star),
+                  title: const Text("Rate the App"),
+                  onTap: () {
+                    // Navigate to Rating Page
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.share),
+                  title: const Text("Share the App"),
+                  onTap: () {
+                    // Trigger App Sharing
+                  },
+                ),
+              ],
+            ),
+          ),
+
+          const Divider(),
+
+          /// Logout Section
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text(
+                "Logout",
+                style: TextStyle(color: Colors.red),
+              ),
+              onTap: () {
+                // Trigger Logout
+              },
+            ),
+          ),
+        ],
+      ),
+    )
   ];
 
   void _onItemTapped(int index) {
@@ -26,7 +215,7 @@ class _AccountPageState extends State<AccountPage> {
     });
   }
 
-   String _getTitleForPage(int index) {
+  String _getTitleForPage(int index) {
     const titles = ["Hello User", "Scan", "Account"];
     return titles[index];
   }
