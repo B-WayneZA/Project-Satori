@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:satori/pages/scan.dart';
 import 'package:satori/pages/account.dart';
+import 'package:camera/camera.dart';
 
 class ScannedOutfit {
   final String imagePath; // Path to the outfit image
@@ -97,6 +98,9 @@ String formatTimeAgo(DateTime timestamp) {
 }
 
 class HomePage extends StatefulWidget {
+  final List<CameraDescription> cameras;
+
+  const HomePage({required this.cameras});
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -110,204 +114,214 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  final List<Widget> _pages = [
-    Padding(
-      padding: const EdgeInsets.only(bottom: 1.0), //TODO
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Recently Scanned',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
+  late List<Widget> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+
+
+     _pages = [
+      Padding(
+        padding: const EdgeInsets.only(bottom: 1.0), //TODO
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Recently Scanned',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // Number of columns
-                crossAxisSpacing: 10.0,
-                mainAxisSpacing: 10.0,
+              SizedBox(height: 10),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, // Number of columns
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                ),
+                itemCount: scannedOutfits.length,
+                itemBuilder: (context, index) {
+                  final outfit = scannedOutfits[index];
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color:
+                          Colors.white, // Background color for the outfit box
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3), // Shadow position
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        // Timestamp at the top
+                        Padding(
+                          padding: const EdgeInsets.all(1.0),
+                          child: Text(
+                            formatTimeAgo(
+                                outfit.timestamp), // Format the timestamp
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        // Outfit image in the middle
+                        Expanded(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.asset(
+                              outfit.imagePath,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Icon(Icons.error,
+                                    size: 50); // Fallback UI
+                              },
+                            ),
+                          ),
+                        ),
+                        // Description at the bottom
+                        Padding(
+                          padding: const EdgeInsets.all(1.0),
+                          child: Text(
+                            outfit.description
+                                .join(', '), // Join description words
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                            ),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
-              itemCount: scannedOutfits.length,
-              itemBuilder: (context, index) {
-                final outfit = scannedOutfits[index];
-                return Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white, // Background color for the outfit box
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3), // Shadow position
-                      ),
-                    ],
-                  ),
-                  child: Column(
+              SizedBox(height: 10),
+              Text(
+                "What You'll Love", // What You'll Love Section
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10),
+              Text(
+                "Project Satori is your one-stop solution for shopping smarter and faster. Here's what makes us special:",
+                style: TextStyle(fontSize: 16, height: 1.5),
+              ),
+              SizedBox(height: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      // Timestamp at the top
-                      Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: Text(
-                          formatTimeAgo(
-                              outfit.timestamp), // Format the timestamp
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      Icon(Icons.check, color: Colors.green),
+                      SizedBox(width: 10),
+                      Text(
+                        textAlign: TextAlign.center,
+                        "Accurate Results",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      // Outfit image in the middle
+                      SizedBox(width: 10),
                       Expanded(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.asset(
-                            outfit.imagePath,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Icon(Icons.error, size: 50); // Fallback UI
-                            },
-                          ),
-                        ),
-                      ),
-                      // Description at the bottom
-                      Padding(
-                        padding: const EdgeInsets.all(1.0),
                         child: Text(
-                          outfit.description
-                              .join(', '), // Join description words
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.black,
-                            fontWeight: FontWeight.normal,
-                          ),
-                          textAlign: TextAlign.center,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                          "Scan outfits with ease using our Advanced AI which ensures precise identification of clothing items.",
+                          style: TextStyle(fontSize: 14),
                         ),
                       ),
                     ],
                   ),
-                );
-              },
-            ),
-            SizedBox(height: 10),
-            Text(
-              "What You'll Love", // What You'll Love Section
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Text(
-              "Project Satori is your one-stop solution for shopping smarter and faster. Here's what makes us special:",
-              style: TextStyle(fontSize: 16, height: 1.5),
-            ),
-            SizedBox(height: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(Icons.check, color: Colors.green),
-                    SizedBox(width: 10),
-                    Text(
-                      textAlign: TextAlign.center,
-                      "Accurate Results",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Icon(Icons.check, color: Colors.green),
+                      SizedBox(width: 10),
+                      Text(
+                        "Effortless Shopping",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        "Scan outfits with ease using our Advanced AI which ensures precise identification of clothing items.",
-                        style: TextStyle(fontSize: 14),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          "Quickly find where to buy the clothes you love",
+                          style: TextStyle(fontSize: 14),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Icon(Icons.check, color: Colors.green),
-                    SizedBox(width: 10),
-                    Text(
-                      "Effortless Shopping",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Icon(Icons.check, color: Colors.green),
+                      SizedBox(width: 10),
+                      Text(
+                        "Time-Saving",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        "Quickly find where to buy the clothes you love",
-                        style: TextStyle(fontSize: 14),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          "No more endless searching but get instant links to online stores for your style.",
+                          style: TextStyle(fontSize: 14),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Icon(Icons.check, color: Colors.green),
-                    SizedBox(width: 10),
-                    Text(
-                      "Time-Saving",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Icon(Icons.check, color: Colors.green),
+                      SizedBox(width: 10),
+                      Text(
+                        "Your closet-digitized",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        "No more endless searching but get instant links to online stores for your style.",
-                        style: TextStyle(fontSize: 14),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          "Save your favorite outfits to revisit them anytime to shop or to share with friends.",
+                          style: TextStyle(fontSize: 14),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Icon(Icons.check, color: Colors.green),
-                    SizedBox(width: 10),
-                    Text(
-                      "Your closet-digitized",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        "Save your favorite outfits to revisit them anytime to shop or to share with friends.",
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(height: 20)
-          ],
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(height: 20)
+            ],
+          ),
         ),
       ),
-    ),
-    ScanPage(),
-    AccountPage(),
-  ];
+      ScanPage(cameras: widget.cameras),
+      AccountPage(cameras: widget.cameras),
+    ];
+  }
 
   String _getTitleForPage(int index) {
     const titles = ["Hello User", "Scan", "Account"];
@@ -317,37 +331,39 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100.0), // Set the height here
-        child: AppBar(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(30),
-            ),
-          ),
-          iconTheme: IconThemeData(
-            color:_selectedIndex == 0
-              ? Color.fromRGBO(217, 208, 222, 1)
-              : Color.fromRGBO(12, 23, 19, 1),// Change your color here
-          ),
-          backgroundColor: _selectedIndex == 0
-              ? Color.fromRGBO(12, 23, 19, 1)
-              : Color.fromRGBO(217, 208, 222, 1),
-          title: Text(
-            _getTitleForPage(_selectedIndex),
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 50,
+            floating: true,
+            pinned: true,
+            iconTheme: IconThemeData(
               color: _selectedIndex == 0
-              ? Color.fromRGBO(217, 208, 222, 1)
-              : Color.fromRGBO(12, 23, 19, 1),
-              fontFamily: "Roboto",
+                  ? Color.fromRGBO(217, 208, 222, 1)
+                  : Color.fromRGBO(12, 23, 19, 1),
+            ),
+            backgroundColor: _selectedIndex == 0
+                ? Color.fromRGBO(12, 23, 19, 1)
+                : Color.fromRGBO(217, 208, 222, 1),
+            title: Text(
+              _getTitleForPage(_selectedIndex),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: _selectedIndex == 0
+                    ? Color.fromRGBO(217, 208, 222, 1)
+                    : Color.fromRGBO(12, 23, 19, 1),
+                fontFamily: "Roboto",
+              ),
             ),
           ),
-        ),
+          SliverFillRemaining(
+            child: _pages[_selectedIndex],
+          ),
+        ],
       ),
-      body: _pages[_selectedIndex],
+
       extendBody: true, // Ensures the floating navbar overlaps body content
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(20.0),
