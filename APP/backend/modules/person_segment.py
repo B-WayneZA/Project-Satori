@@ -1,6 +1,7 @@
 import cv2
 import torch
 import os
+import numpy as np
 from detectron2.engine import DefaultPredictor
 from detectron2.config import get_cfg
 from detectron2.utils.visualizer import Visualizer
@@ -27,11 +28,34 @@ def load_model():
 def segment_person(image_path, predictor):
     # Read image
     image = cv2.imread(image_path)
+    if image is None:
+        print("Error: unable to read image")
+        return None
+    
     outputs = predictor(image)
     instances = outputs["instances"]
+    
+    person_class_id = 0
+    person_indices = instances.pred_classes == person_class_id
+    masks = instances.pred_masks[person_indices]
+
+    if len(masks) == 0:
+        raise ValueError("No person detected in the image.")
+
+    # Combine all person masks into a single mask
+    combined_mask = np.any(masks.numpy(), axis=0).astype(np.uint8) * 255
+
+    # Create a transparent background
+    transparent_background = np.zeros_like(image, dtype=np.uint8)
+
+    # Apply the mask to the original image
+    person_with_background_removed = cv2.bitwise_and(image, image, mask=combined_mask)
+
+    # Overlay the masked person onto the transparent background
+    result_image = np.where(combined_mask[..., None] == 255, person_with_background_removed, transparent_background)
     masks = instances.pred_masks.cpu().numpy()
     boxes = instances.pred_boxes.tensor.cpu().numpy()
-    return masks, boxes, image
+    return masks, boxes, result_image
 
 def visualize_results(image, masks, boxes, output_path="results/output.jpg"):
     from detectron2.utils.visualizer import GenericMask
